@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class PlayerIdleState : PlayerState
+public class PlayerIdleState : PlayerGroundedState
 {
     public PlayerIdleState(Player _player, PlayerStateMachine _stateMachine, string _animBoolName)
         : base(_player, _stateMachine, _animBoolName) //생성자를 이용한 빠른 초기화
@@ -11,14 +11,17 @@ public class PlayerIdleState : PlayerState
     public override void Enter()
     {
         base.Enter();
+        rb.linearVelocity = new Vector2(0, 0);
     }
 
     public override void Update()
     {
         base.Update();
-        if (Input.GetKeyDown(KeyCode.N))
+        if (xInput == player.facingDir && player.isWallDetected())
+            return;
+        if(xInput != 0)
         {
-            player.stateMachine.ChangeState(player.moveState);
+            stateMachine.ChangeState(player.moveState);
         }
     }
 
